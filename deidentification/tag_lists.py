@@ -15,7 +15,7 @@ with open(conf_profile_path) as tsv_file:
         else:
             range_key = (
                 tag_to_tuple(d[0].replace('X', '0')),
-                tag_to_tuple(d[0].replace('X', 'F'))
+                tag_to_tuple(d[0].replace('X', 'F')),
             )
             conf_profile_range[range_key] = {'name': d[2], 'profile': d[1]}
 

@@ -89,7 +89,7 @@ def test_anonymizer_public_tags(dicom_path):
 def test_anonymizer_input_tags(dicom_path):
     tags_config = {
         (0x0008, 0x0032): {'action': 'K'},  # Usually deleted
-        (0x0008, 0x0008): {'action': 'X'}  # Usually kept
+        (0x0008, 0x0008): {'action': 'X'},  # Usually kept
     }
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path),
                               tags_config=tags_config)  # Usually kept
@@ -186,13 +186,13 @@ def test_anonymize_config_safe_private(dicom_path):
         # Private Creator tag to be kept
         (0x2005, 0x0011): {
             'private_creator': ds.get((0x2005, 0x0011)).value,
-            'action': 'K'
+            'action': 'K',
         },
         # Private Creator tag with wrong name
         (0x2005, 0x0012): {
             'private_creator': 'XX',
-            'action': 'K'
-        }
+            'action': 'K',
+        },
     }
     output_dicom_path = os.path.join(OUTPUT_DIR, os.path.basename(dicom_path))
     anon = Anonymizer(os.path.abspath(dicom_path),
@@ -239,12 +239,12 @@ def test_anonymize_private_creator_tree(dicom_path):
     tags_config = {
         (0x3033, 0x1011): {
             'private_creator': 'Test deidentification',
-            'action': 'K'
+            'action': 'K',
         },
         (0x3035, 0x1011): {
             'private_creator': 'Test deidentification2',
-            'action': 'K'
-        }
+            'action': 'K',
+        },
     }
 
     output_dicom_path = os.path.join(OUTPUT_DIR, os.path.basename(dicom_path))
@@ -263,10 +263,10 @@ def test_anonymize_private_creator_tree(dicom_path):
 def test_ano_several_private_creator_name(dicom_path):
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
-    tmp_config = create_fake_config([
-        ['(3033,1011)', 'VIT', 'K', 'Name1'],
-        ['(3033,1011)', 'VIT', 'K', 'Name2'],
-    ])
+    tmp_config = create_fake_config((
+        ('(3033,1011)', 'VIT', 'K', 'Name1'),
+        ('(3033,1011)', 'VIT', 'K', 'Name2'),
+    ))
 
     ds = pydicom.read_file(osp.abspath(dicom_path))
     sequence_block = pydicom.Dataset()

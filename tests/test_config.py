@@ -4,8 +4,11 @@ from . import create_fake_config
 
 
 def test_tag_lists():
-    from deidentification.tag_lists import (conf_profile, conf_profile_range,
-                                            safe_private_attributes)
+    from deidentification.tag_lists import (
+        conf_profile,
+        conf_profile_range,
+        safe_private_attributes,
+    )
     assert isinstance(conf_profile, dict)
     assert isinstance(conf_profile_range, dict)
     assert isinstance(safe_private_attributes, dict)
@@ -47,10 +50,10 @@ def test_tag_to_tuple():
 
 def test_multiple_private_creator_name():
     from deidentification.config import load_config_profile
-    tmp_config = create_fake_config([
-        ['(2005,0010)', 'Private Creator', 'K', 'Name1'],
-        ['(2005,0010)', 'Private Creator', 'K', 'Name2']
-    ])
+    tmp_config = (
+        ('(2005,0010)', 'Private Creator', 'K', 'Name1'),
+        ('(2005,0010)', 'Private Creator', 'K', 'Name2'),
+    )
 
-    config = load_config_profile(tmp_config)
-    assert len(config[(0x2005, 0x0010)]['private_creator']) == 2
+    config = load_config_profile(create_fake_config(tmp_config))
+    assert len(config[(0x2005, 0x0010)]['private_creator']) == len(tmp_config)
